@@ -414,7 +414,7 @@ bd_pd_menciones <- bd_pd %>%
   ungroup() 
 
 
-# Gráficas de barras ----
+# Gráficas de barras de menciones ----
 bd_pd_menciones %>% 
   select(nombre, nombre_corto, menciones_amlo, menciones_anaya, menciones_meade, menciones_zavala, menciones_bronco, menciones_total) %>% 
   group_by(nombre, nombre_corto) %>% 
@@ -445,4 +445,101 @@ bd_pd_menciones %>%
 
 ggsave(filename = "num_menciones_candidatos.jpg", path = "03_graficas/menciones/primero/", width = 15, height = 10, dpi = 100)  
 
+
+# Gráficas de redes de menciones ----
+nodos_pd <- bd_pd_menciones %>% 
+  select(nombre, nombre_corto, menciones_amlo, menciones_anaya, menciones_meade, menciones_zavala, menciones_bronco) %>% 
+  group_by(nombre, nombre_corto) %>% 
+  summarise_all(funs(tot = sum)) %>% 
+  ungroup() %>% 
+  gather(key = "cand_mencionado",
+         value = "num",
+         -nombre, -nombre_corto) %>% 
+  group_by(cand_mencionado) %>% 
+  summarise(menciones_tot = sum(num)) %>% 
+  ungroup() %>% 
+  mutate(cand_mencionado = case_when(cand_mencionado == "menciones_amlo_tot" ~ "AMLO",
+                                     cand_mencionado == "menciones_anaya_tot" ~ "Anaya",
+                                     cand_mencionado == "menciones_bronco_tot" ~ "El Bronco",
+                                     cand_mencionado == "menciones_meade_tot" ~ "Meade",
+                                     cand_mencionado == "menciones_zavala_tot" ~ "Zavala")) %>%
+  rename(candidato = cand_mencionado) %>% 
+  rowid_to_column("id") %>% 
+  mutate(nom_etiqueta = paste(candidato, "\n(", menciones_tot, ")",sep = ""))
+
+menciones_pd <- bd_pd_menciones %>% 
+  select(nombre, nombre_corto, menciones_amlo, menciones_anaya, menciones_meade, menciones_zavala, menciones_bronco, menciones_total) %>% 
+  group_by(nombre, nombre_corto) %>% 
+  summarise_all(funs(tot = sum)) %>% 
+  ungroup() %>% 
+  gather(key = "cand_mencionado",
+         value = "num",
+         -nombre, -nombre_corto) %>%  
+  mutate(cand_mencionado = case_when(cand_mencionado == "menciones_amlo_tot" ~ "AMLO",
+                                     cand_mencionado == "menciones_anaya_tot" ~ "Anaya",
+                                     cand_mencionado == "menciones_bronco_tot" ~ "El Bronco",
+                                     cand_mencionado == "menciones_meade_tot" ~ "Meade",
+                                     cand_mencionado == "menciones_zavala_tot" ~ "Zavala")) %>% 
+  filter(!is.na(cand_mencionado)) %>% 
+  mutate(nombre_corto = ifelse(nombre_corto == "López Obrador", "AMLO", nombre_corto)) %>% 
+  rename(weight = num) %>% 
+  select(-nombre) %>% 
+  filter(weight > 0)
+
+
+enlaces_pd <- menciones_pd %>% 
+  left_join(nodos_pd, by = c("nombre_corto" = "candidato")) %>% 
+  rename(from = id) %>% 
+  select(-menciones_tot)
+
+enlaces_pd <- enlaces_pd %>% 
+  left_join(nodos_pd, by = c("cand_mencionado" = "candidato")) %>% 
+  rename(to = id) %>% 
+  select(from, to, weight, everything())
+
+### Guardar versiones en formato .csv 
+write_csv(enlaces_pd, "04_datos_output/enlaces_pd.csv")  
+write_csv(nodos_pd, "04_datos_output/nodos_pd.csv")
+
+# Generar objeto redes con igraph
+datos_red_pd <- graph_from_data_frame(d = enlaces_pd, vertices = nodos_pd, directed = TRUE)
+
+# Cambiar tipo de letra
+quartzFonts(avenir = c("Avenir Book", "Avenir Black", "Avenir Book Oblique", 
+                       "Avenir Black Oblique"))
+par(family = 'avenir')
+
+# Cambiar márgenes
+
+png("03_graficas/menciones/primero/num_menciones_candidatos_red_pd.png", width = 9, height = 7, units = "in", res = 200)
+par(mar = c(0, 0, 0, 0))
+plot.igraph(datos_red_pd, 
+            edge.arrow.size = enlaces_pd$weight/1.2, 
+            edge.width = enlaces_pd$weight/3, 
+            edge.curved=.3,
+            edge.label = enlaces_pd$weight,
+            edge.label.family = "Trebuchet MS Bold",
+            edge.label.font = 2,
+            edge.label.color=c("grey20"),
+            layout = layout_in_circle, 
+            vertex.size = nodos_pd$menciones_tot,
+            vertex.color = c("#a62a2a", "steelblue", "black", "#f14b4b", "#00cdcd"), 
+            vertex.label = nodos_pd$nom_etiqueta,
+            vertex.frame.color="#66666600", 
+            vertex.label.family = "Trebuchet MS Bold",
+            vertex.label.font = 2,
+            vertex.label.color=c("grey20"),
+            remove.loops = T,
+            label.font = 2,
+            cex = 2, 
+            cex.main = 4,
+            axes = F,
+            xlim = c(-1, 1.5),
+            ylim = c(-1, 1))
+
+title(main = "NÚMERO DE VECES QUE ____ SE REFIRIÓ A ____ EN EL PRIMER DEBATE PRESIDENCIAL", adj = 0.2, line = -1.3, cex = 4.5)
+text(-1.58, 1.25, labels = "La cifra entre paréntesis indica el total de veces que se mencionó el nombre de ese candidato ", adj = 0, cex = 1, col = "grey40")
+text(-1.58, -1.3, labels = "Sebastián Garrido de Sierra / @segasi / oraculus.mx", adj = 0, cex = 1, col = "grey40")
+dev.off()
+par(mar=c(5.1,4.1,4.1,2.1))
 
