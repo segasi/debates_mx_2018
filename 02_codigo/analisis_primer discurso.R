@@ -160,3 +160,15 @@ bd_pd %>%
         legend.position = "none")
 
 ggsave(filename = "palabras_por_candidato.jpg", path = "03_graficas/palabras/primero/", width = 15, height = 10, dpi = 100)
+
+# Generar lista de stopwords en español ----
+# Código adaptado de aquí: http://jvera.rbind.io/post/2017/10/16/spanish-stopwords-for-tidytext-package/
+
+# Definir stopwords ----
+palabras_pd <- c("cada", "candidato", "e", "sé", "si", "usted", "ustedes", "va", "voy")
+word <-  c(tm::stopwords("spanish"), palabras_pd)
+custom_stop_words <- data_frame(word,
+                                lexicon = "custom")
+
+custom_stop_words %>% arrange(word) %>%  print(n = nrow(.))
+
