@@ -172,3 +172,35 @@ custom_stop_words <- data_frame(word,
 
 custom_stop_words %>% arrange(word) %>%  print(n = nrow(.))
 
+
+# Top-10 palabras mencionadas por cada candidato ----
+lista_candidatos <- bd_pd %>% filter(rol == "Candidato") %>% distinct(nombre)
+candidatos <- lista_candidatos$nombre
+
+# Generar una gráfica por candidato
+for (i in seq_along(candidatos)) {
+  bd_pd %>% 
+    unnest_tokens(word, dialogo) %>% 
+    anti_join(custom_stop_words) %>% # Remover stopwords
+    group_by(nombre) %>% 
+    count(word, sort = TRUE, 
+          rol = last(rol)) %>% 
+    mutate(ranking = min_rank(-n)) %>% 
+    ungroup() %>% 
+    filter(ranking < 10, 
+           nombre == candidatos[i]) %>% 
+    arrange(nombre, ranking) %>% 
+    ggplot(aes(reorder(word, n), n)) +
+    geom_col(fill = "steelblue") +
+    scale_y_continuous(breaks = seq(0, 20, 2), limits = c(0, 21), expand = c(0, 0)) +
+    labs(title = paste("LAS 10 PALABRAS MÁS MENCIONADAS POR", candidatos[i], sep = " "),
+         x = "",
+         y = "\nFrecuencia") +
+    coord_flip() +
+    tema +
+    theme(panel.grid.major.y = element_blank())
+  
+  ggsave(filename = paste("10_palabras_mas_mencionadas", candidatos[i],".jpg", sep = ""), path = "03_graficas/palabras/primero/top_10", width = 15, height = 12, dpi = 100)
+}
+
+
