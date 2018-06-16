@@ -103,7 +103,7 @@ bd_pd <- bd_pd %>%
 
 ### Análisis usando tidytext ----
 
-# Contar palabras totales por candidato
+# Contar palabras totales por candidato
 bd_pd %>% 
   filter(rol == "Candidato") %>% 
   unnest_tokens(word, dialogo) %>% 
@@ -114,7 +114,7 @@ bd_pd %>%
   ungroup() %>% 
   print()
 
-# Contar palabras totales por moderador
+# Contar palabras totales por moderador
 bd_pd %>% 
   filter(rol == "Moderador") %>% 
   unnest_tokens(word, dialogo) %>%   
@@ -320,7 +320,7 @@ bd_pd %>%
          str_detect(dialogo, "implica"))
 
 
-# Análisis y gráfica de bigramas ----
+# Análisis y gráficas de bigramas ----
 bd_pd_bigrams <- bd_pd %>%
   filter(rol == "Candidato") %>% 
   unnest_tokens(bigram, dialogo, token = "ngrams", n = 2) %>% 
@@ -385,7 +385,7 @@ for (i in seq_along(candidatos)) {
           strip.text = element_text(size = 14, face = "bold", color = "white"),
           strip.background =element_rect(fill = "#66666680", color = "#66666600"))
   
-  ggsave(filename = paste("top_10_pares_palabras_mas_mencionadas", candidatos[i],".jpg", sep = " "), path = "03_graficas/palabras/primero/top_10_pares", width = 15, height = 12, dpi = 100)
+  ggsave(filename = paste("top_10_pares_palabras_mas_mencionadas", candidatos[i],".jpg", sep = "_"), path = "03_graficas/palabras/primero/top_10_pares", width = 15, height = 12, dpi = 100)
 }
 
 # Análisis de trigramas ----
