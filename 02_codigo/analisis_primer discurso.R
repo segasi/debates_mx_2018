@@ -320,7 +320,7 @@ bd_pd %>%
          str_detect(dialogo, "implica"))
 
 
-# Análisis y gráfica de bigrams ----
+# Análisis y gráfica de bigramas ----
 bd_pd_bigrams <- bd_pd %>%
   filter(rol == "Candidato") %>% 
   unnest_tokens(bigram, dialogo, token = "ngrams", n = 2) %>% 
@@ -387,4 +387,17 @@ for (i in seq_along(candidatos)) {
   
   ggsave(filename = paste("top_10_pares_palabras_mas_mencionadas", candidatos[i],".jpg", sep = " "), path = "03_graficas/palabras/primero/top_10_pares", width = 15, height = 12, dpi = 100)
 }
+
+# Análisis de trigramas ----
+bd_pd %>%
+  filter(rol == "Candidato") %>% 
+  unnest_tokens(trigram, dialogo, token = "ngrams", n = 3) %>% 
+  separate(trigram, c("palabra_1", "palabra_2", "palabra_3"), sep = " ", remove = FALSE) %>%
+  
+  filter(!palabra_1 %in% custom_stop_words$word) %>%
+  filter(!palabra_2 %in% custom_stop_words$word) %>% 
+  filter(!palabra_3 %in% custom_stop_words$word) %>%
+  count(nombre, trigram, palabra_1, palabra_2, palabra_3, sort = TRUE) %>% 
+  filter(n >= 2) %>% 
+  print(n = 150)
 
