@@ -93,8 +93,8 @@ bd_pd <- bd_pd %>%
          dialogo = str_replace(dialogo, "\\(sic\\)", ""),
          dialogo = str_replace(dialogo, "\\(FALLA DE ORIGEN\\)", ""))
 
-# Guardar base en formato .csv
-write_csv(bd_pd, path = "04_datos_output/bd_pd_primer_debate.csv")
+### Guardar base en formato .csv ----
+write_csv(bd_pd, path = "04_datos_output/bd_primer_debate.csv")
 
 ### Generar variable que indique a qué debate corresponde el texto ----
 bd_pd <- bd_pd %>% 
