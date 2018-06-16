@@ -96,3 +96,7 @@ bd_pd <- bd_pd %>%
 # Guardar base en formato .csv
 write_csv(bd_pd, path = "04_datos_output/bd_pd_primer_debate.csv")
 
+### Generar variable que indique a qué debate corresponde el texto ----
+bd_pd <- bd_pd %>% 
+  mutate(num_debate = 1)
+
