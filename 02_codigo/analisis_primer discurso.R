@@ -25,3 +25,8 @@ tema <-  theme_minimal() +
 
 
 
+### Cargar texto del primer debate ----
+primer_debate <- "http://segasi.com.mx/clases/cide/vis_man/datos/primer_debate_completo.docx" %>%
+  download() %>%
+  read_docx(skip = 3, remove.empty = TRUE, trim = TRUE)
+
