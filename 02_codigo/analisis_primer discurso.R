@@ -100,3 +100,50 @@ write_csv(bd_pd, path = "04_datos_output/bd_primer_debate.csv")
 bd_pd <- bd_pd %>% 
   mutate(num_debate = 1)
 
+
+### Análisis usando tidytext ----
+
+palabras_candidatos_pd <- bd_pd %>% 
+  filter(rol == "Candidato") %>% 
+  unnest_tokens(word, dialogo) %>% 
+  count(nombre, word, sort = TRUE) %>%
+  ungroup()
+
+bd_pd %>% 
+  filter(rol == "Moderador") %>% 
+  unnest_tokens(word, dialogo) %>%   
+  count(nombre, word, sort = TRUE) %>%
+  ungroup() %>% 
+  group_by(nombre) %>%
+  summarize(total = sum(n)) %>% 
+  ungroup()  
+
+# Gráfica palabras totales de cada candidato ----
+palabras_candidatos_pd %>% 
+  group_by(nombre) %>%
+  summarize(total = sum(n)) %>% 
+  ungroup() %>% 
+  mutate(nombre = fct_relevel(nombre, "RICARDO ANAYA", "JOSÉ ANTONIO MEADE", "ANDRÉS MANUEL LÓPEZ OBRADOR", "MARGARITA ZAVALA", "JAIME RODRÍGUEZ CALDERÓN")) %>% 
+  ggplot(aes(reorder(nombre, total), total, fill = nombre)) +
+  geom_col() +
+  geom_text(aes(label = paste("Total: ", comma(total), sep = "")), hjust = 1.15, vjust = -0.6, size = 7, col = "white", fontface = "bold") +
+  geom_text(aes(label = paste(round(total/19, 0), " palabras x min.", sep = "")), hjust = 1.12, vjust = 1.35,  size = 6, col = "white") +
+  scale_y_continuous(expand = c(0, 0)) +
+  scale_fill_manual(values = c("steelblue", "#f14b4b", "#a62a2a",  "#00cdcd", "grey50")) + 
+  labs(title = "NÚMERO DE PALABRAS MENCIONADAS POR CADA CANDIDATO\nEN EL PRIMER DEBATE PRESIDENCIAL",
+       x = NULL, 
+       y = NULL, 
+       caption = "\nSebastián Garrido de Sierra / @segasi / oraculus.mx") +
+  coord_flip() +
+  tema +
+  theme(plot.title = element_text(size = 28),
+        plot.caption = element_text(size = 24), 
+        panel.grid.major = element_blank(),
+        axis.text.x = element_blank(),
+        panel.spacing = unit(2, "lines"), 
+        strip.text = element_text(size = 17, face = "bold", color = "white"),
+        strip.background =element_rect(fill = "#66666680", color = "#66666600"),
+        legend.position = "none")
+
+ggsave(filename = "palabras_por_candidato.jpg", path = "03_graficas/palabras/primero/", width = 15, height = 10, dpi = 100)
+
