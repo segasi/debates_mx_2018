@@ -219,3 +219,32 @@ bd_td %>%
   anti_join(custom_stop_words) %>% # Remover stopwords
   count(word, sort = TRUE)    
 
+# Top-10 palabras pronunciadas por cada candidato, facet ----
+lista_candidatos_td <- bd_td %>% filter(rol == "Candidato") %>% distinct(nombre)
+candidatos_td <- lista_candidatos_td$nombre
+
+bd_td %>% 
+  filter(rol == "Candidato") %>% 
+  unnest_tokens(word, dialogo) %>% 
+  anti_join(custom_stop_words) %>% # Remover stopwords
+  group_by(nombre) %>% 
+  count(word, sort = TRUE, 
+        rol = last(rol)) %>%   
+  mutate(ranking = rank(-n, ties.method = "first")) %>% 
+  ungroup() %>% 
+  filter(ranking < 11) %>% 
+  arrange(nombre, ranking) %>% 
+  mutate(nombre = fct_relevel(nombre, "RICARDO ANAYA", "JOSÉ ANTONIO MEADE", "ANDRÉS MANUEL LÓPEZ OBRADOR", "JAIME RODRÍGUEZ CALDERÓN"),
+         word = fct_reorder(word, ranking)) %>%
+  ggplot(aes(word, n, fill = nombre)) +
+  geom_col() +
+  scale_y_continuous(breaks = seq(0, 30, 5), limits = c(0, 32), expand = c(0, 0)) +
+  scale_fill_manual(values = c("steelblue", "#f14b4b", "#a62a2a",  "#00cdcd", "grey50")) +
+  labs(title = paste("LAS 10 PALABRAS MÁS PRONUNCIADAS POR", candidatos_td[i], sep = " "),
+       x = "",
+       y = "\nFrecuencia") +
+  coord_flip() +
+  facet_wrap(~ nombre, ncol = 2, scales = "free") +
+  tema +
+  theme(panel.grid.major.y = element_blank())
+
