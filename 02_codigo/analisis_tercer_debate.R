@@ -109,3 +109,8 @@ bd_td <- bd_td %>%
          dialogo = str_replace(dialogo, "\\(FRASE OTOMÍ\\)", ""))
   
 
+### Guardar base en formato .csv ----
+bd_td %>% 
+  write_csv(path = "04_datos_output/bd_tercer_debate.csv")
+
+
