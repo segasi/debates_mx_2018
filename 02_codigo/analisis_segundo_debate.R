@@ -179,3 +179,36 @@ ggsave(filename = "palabras_por_actor.jpg", path = "03_graficas/palabras/segundo
 
 
 
+### Gráfica de palabras totales de cada candidato o moderador ----
+bd_sd %>% 
+  filter(rol == "Candidato") %>% 
+  unnest_tokens(word, dialogo) %>%   
+  count(nombre, word, sort = TRUE) %>%
+  ungroup() %>% 
+  group_by(nombre) %>%
+  summarize(total = sum(n)) %>% 
+  ungroup() %>% 
+  mutate(nombre = fct_relevel(nombre, "RICARDO ANAYA", "JOSÉ ANTONIO MEADE", "ANDRÉS MANUEL LÓPEZ OBRADOR", "JAIME RODRÍGUEZ CALDERÓN")) %>% 
+  ggplot(aes(reorder(nombre, total), total, fill = nombre)) +
+  geom_col() +
+  geom_text(aes(label = paste("Total: ", comma(total), sep = "")), hjust = 1.15, vjust = -0.6, size = 7, col = "white", fontface = "bold") +
+  geom_text(aes(label = paste(round(total/25, 0), " palabras x min.", sep = "")), hjust = 1.12, vjust = 1.35,  size = 6, col = "white") +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 3800)) +
+  scale_fill_manual(values = c("steelblue", "#f14b4b", "#a62a2a",  "#00cdcd", "grey50")) + 
+  labs(title = "NÚMERO DE PALABRAS PRONUNCIADAS POR CADA CANDIDATO\nEN EL SEGUNDO DEBATE PRESIDENCIAL",
+       x = NULL, 
+       y = NULL, 
+       caption= "\nSebastián Garrido / @segasi / Juan Ricardo Pérez / @juanrpereze / oraculus.mx") +
+  coord_flip() +
+  tema +
+  theme(plot.title = element_text(size = 28),
+        plot.caption = element_text(size = 24), 
+        panel.grid.major = element_blank(),
+        axis.text.x = element_blank(),
+        panel.spacing = unit(2, "lines"), 
+        strip.text = element_text(size = 17, face = "bold", color = "white"),
+        strip.background =element_rect(fill = "#66666680", color = "#66666600"),
+        legend.position = "none")
+
+ggsave(filename = "palabras_por_candidato.jpg", path = "03_graficas/palabras/segundo/", width = 15, height = 10, dpi = 100)
+
