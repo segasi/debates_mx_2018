@@ -147,7 +147,7 @@ bd_pd %>%
   labs(title = "NÚMERO DE PALABRAS MENCIONADAS POR CADA CANDIDATO\nEN EL PRIMER DEBATE PRESIDENCIAL",
        x = NULL, 
        y = NULL, 
-       caption = "\nSebastián Garrido de Sierra / @segasi / oraculus.mx") +
+       caption= "\nSebastián Garrido / @segasi / Juan Ricardo Pérez / @juanrpereze / oraculus.mx") +
   coord_flip() +
   tema +
   theme(plot.title = element_text(size = 28),
@@ -259,7 +259,7 @@ palabras_candidatos_pd %>%
   labs(title = "LAS 10 PALABRAS MÁS DISTINTIVAS DE CADA CANDIDATO (Tf-idf) EN EL\nPRIMER DEBATE PRESIDENCIAL",
        x = NULL, 
        y = NULL, 
-       caption = "\nSebastián Garrido de Sierra / @segasi / oraculus.mx") +
+       caption= "\nSebastián Garrido / @segasi / Juan Ricardo Pérez / @juanrpereze / oraculus.mx") +
   facet_wrap(~ nombre, ncol = 2, scales = "free") +
   coord_flip() +
   tema +
@@ -352,7 +352,7 @@ bd_pd_bigrams %>%
   labs(title = "LOS 10 PARES DE PALABRAS MÁS FRECUENTES DE CADA CANDIDATO\nEN EL PRIMER DEBATE PRESIDENCIAL",
        x = NULL, 
        y = NULL, 
-       caption = "\nSebastián Garrido de Sierra / @segasi / oraculus.mx") +
+       caption= "\nSebastián Garrido / @segasi / Juan Ricardo Pérez / @juanrpereze / oraculus.mx") +
   facet_wrap(~ nombre, ncol = 2, scales = "free") +
   coord_flip() +
   tema +
