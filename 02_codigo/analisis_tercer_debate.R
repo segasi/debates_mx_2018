@@ -453,7 +453,7 @@ for (i in seq_along(candidatos_td)) {
           strip.text = element_text(size = 14, face = "bold", color = "white"),
           strip.background =element_rect(fill = "#66666680", color = "#66666600"))
   
-  ggsave(filename = paste("top_10_pares_palabras_mas_pronunciadas", candidatos_td[i],".jpg", sep = " "), path = "03_graficas/palabras/tercero/top_10_pares", width = 15, height = 12, dpi = 100)
+  ggsave(filename = paste("top_10_pares_palabras_mas_pronunciadas", candidatos_td[i],".jpg", sep = "_"), path = "03_graficas/palabras/tercero/top_10_pares", width = 15, height = 12, dpi = 100)
 }
 
 ## Análisis de trigramas ----
