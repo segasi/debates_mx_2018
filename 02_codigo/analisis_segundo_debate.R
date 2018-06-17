@@ -254,3 +254,31 @@ bd_sd %>%
   tema +
   theme(panel.grid.major.y = element_blank())
 
+# Top-10 palabras pronunciadas por cada candidato ----
+
+for (i in seq_along(candidatos_sd)) {
+  bd_sd %>% 
+    unnest_tokens(word, dialogo) %>% 
+    anti_join(custom_stop_words) %>% # Remover stopwords
+    group_by(nombre) %>% 
+    count(word, sort = TRUE, 
+          rol = last(rol)) %>% 
+    mutate(ranking = min_rank(-n)) %>% 
+    ungroup() %>% 
+    filter(ranking < 10, 
+           nombre == candidatos_sd[i]) %>% 
+    arrange(nombre, ranking) %>% 
+    ggplot(aes(reorder(word, n), n)) +
+    geom_col(fill = "steelblue") +
+    scale_y_continuous(breaks = seq(0, 30, 2), limits = c(0, 32), expand = c(0, 0)) +
+    labs(title = paste("LAS 10 PALABRAS MÁS PRONUNCIADAS POR", candidatos_sd[i], sep = " "),
+         x = "",
+         y = "\nFrecuencia") +
+    coord_flip() +
+    tema +
+    theme(panel.grid.major.y = element_blank())
+  
+  ggsave(filename = paste("10_palabras_mas_pronunciadas", candidatos_sd[i],".jpg", sep = " "), path = "03_graficas/palabras/segundo/top_10/", width = 15, height = 12, dpi = 100)
+}
+
+
