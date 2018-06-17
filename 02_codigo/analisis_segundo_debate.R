@@ -583,7 +583,7 @@ par(family = 'avenir')
 png("03_graficas/menciones/segundo/num_menciones_candidatos_sd_red.png", width = 9, height = 7, units = "in", res = 200)
 par(mar = c(0, 0, 1, 0))
 plot.igraph(datos_red_sd, 
-            edge.arrow.size = enlaces_sd$weight/1.2, 
+            edge.arrow.size = enlaces_sd$weight/1.5, 
             edge.width = enlaces_sd$weight/3, 
             edge.curved=.3,
             edge.label = enlaces_sd$weight,
