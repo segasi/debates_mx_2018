@@ -100,3 +100,12 @@ bd_td <- bd_td %>%
   mutate(rol = ifelse(!is.na(nombre_corto), "Candidato", rol))
 
 
+### Eliminar algunos términos que incluyeron los capturistas pero que no son palabras mencionadas por los candidatos o moderadores ----
+bd_td <- bd_td %>% 
+  mutate(dialogo = str_replace(dialogo, "\\(INAUDIBLE\\)", ""),
+         dialogo = str_replace(dialogo, "\\(PANELISTAS\\)", ""),
+         dialogo = str_replace(dialogo, "\\(SIC\\)", ""),
+         dialogo = str_replace(dialogo, "\\(FALLA DE ORIGEN\\)", ""),
+         dialogo = str_replace(dialogo, "\\(FRASE OTOMÍ\\)", ""))
+  
+
