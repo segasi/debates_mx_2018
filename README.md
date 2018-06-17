@@ -8,7 +8,7 @@ El proyecto incluye cuatro folders:
 
 - En el folder **01_datos** encontrarás las transcripciones en Word de cada uno de los debates. Sin embargo, para procesar estos archivos en el código los descargamos de Internet.
 
-- En el folder **02_codigo** encontrarás el código del análisis de cada uno de los debates, así como un cuarto script en el que comparamos los datos de los tres.
+- En el folder **02_codigo** encontrarás el código del análisis de cada uno de los debates, así como un cuarto script en el que comparamos los datos de los tres. Cada uno de los scripts es independiente de los otros.
 
 - En el folder **03_graficas** encontrarás las gráficas generadas para analizar cada debate y la comparación de los tres. En esta carpeta hay más gráficas de las que publicamos. 
 
