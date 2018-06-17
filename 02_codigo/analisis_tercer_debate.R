@@ -199,3 +199,23 @@ palabras_candidatos_td %>%
 
 ggsave(filename = "palabras_por_candidato.jpg", path = "03_graficas/palabras/tercero/", width = 15, height = 10, dpi = 100)
 
+
+# Generar lista de stopwords en español ----
+# Código adaptado de aquí: http://jvera.rbind.io/post/2017/10/16/spanish-stopwords-for-tidytext-package/
+
+# Definir stopwords ----
+palabras <- c("cada", "candidato", "e", "sé", "si", "usted", "ustedes", "va", "voy")
+word <-  c(tm::stopwords("spanish"), palabras)
+custom_stop_words <- data_frame(word,
+                                lexicon = "custom")
+
+custom_stop_words %>% arrange(word) %>%  print(n = nrow(.))
+
+
+# Top-10 pronunciadas por todos los candidatos juntos
+bd_td %>% 
+  filter(rol == "Candidato") %>% 
+  unnest_tokens(word, dialogo) %>% 
+  anti_join(custom_stop_words) %>% # Remover stopwords
+  count(word, sort = TRUE)    
+
