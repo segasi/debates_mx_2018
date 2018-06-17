@@ -463,3 +463,15 @@ bd_td %>%
   filter(n >= 2) %>% 
   print(n = 150)
 
+## Conteo de menciones de otros candidatos_td por cada candidato ----
+bd_td_menciones <- bd_td %>% 
+  filter(rol == "Candidato") %>% 
+  group_by(nombre) %>% 
+  mutate(menciones_amlo = str_count(dialogo, "Andrés Manuel López Obrador|Andrés Manuel|López Obrador|Andrés"), 
+         menciones_anaya = str_count(dialogo, "Ricardo Anaya|Anaya|Ricardo|Ricky"),
+         menciones_meade = str_count(dialogo, "José Antonio Meade|José Antonio|Meade|Pepe Toño"),
+         menciones_bronco = str_count(dialogo, "Jaime Rodríguez \`El Bronco\`|El Bronco|Jaime Rodríguez|Jaime"),
+         menciones_total = menciones_amlo + menciones_anaya + menciones_bronco + menciones_meade) %>% 
+  ungroup() 
+
+
