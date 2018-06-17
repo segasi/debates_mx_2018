@@ -99,12 +99,22 @@ bd_sd <- bd_sd %>%
   mutate(rol = ifelse(!is.na(nombre_corto), "Candidato", rol))
 
 
-# Guardar base en formato .csv ----
+
+### Eliminar algunos términos que incluyeron los capturistas pero que no son palabras mencionadas por los candidatos o moderadores ----
+bd_pd <- bd_pd %>% 
+  mutate(dialogo = str_replace(dialogo, "\\(INAUDIBLE\\)", ""),
+         dialogo = str_replace(dialogo, "\\(Inaudible\\)", ""),
+         dialogo = str_replace(dialogo, "\\(PANELISTAS\\)", ""),
+         dialogo = str_replace(dialogo, "\\(SIC\\)", ""),
+         dialogo = str_replace(dialogo, "\\(Sic\\)", ""),
+         dialogo = str_replace(dialogo, "\\(sic\\)", ""),
+         dialogo = str_replace(dialogo, "\\(FALLA DE ORIGEN\\)", ""))
+
+### Guardar base en formato .csv ----
 write_csv(bd_sd, path = "04_datos_output/bd_segundo_debate.csv")
 
 
 ### Generar variable que indique a qué debate corresponde el texto ----
 bd_sd <- bd_sd %>% 
   mutate(num_debate = 2)
-
 
