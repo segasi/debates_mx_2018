@@ -171,6 +171,7 @@ ggsave(filename = "palabras_por_actor.jpg", path = "03_graficas/palabras/tercero
 
 
 # Gráfcia palabras totales de cada candidato ----
+# OJO: Esta gráfica no fue incluida en el texto publicado
 palabras_candidatos_td %>% 
   group_by(nombre) %>%
   summarize(total = sum(n)) %>% 
@@ -220,6 +221,7 @@ bd_td %>%
   count(word, sort = TRUE)    
 
 # Top-10 palabras pronunciadas por cada candidato, facet ----
+# OJO: Esta gráfica no fue incluida en el texto publicado
 lista_candidatos_td <- bd_td %>% filter(rol == "Candidato") %>% distinct(nombre)
 candidatos_td <- lista_candidatos_td$nombre
 
@@ -249,7 +251,7 @@ bd_td %>%
   theme(panel.grid.major.y = element_blank())
 
 # Top-10 palabras pronunciadas por cada candidato ----
-
+# OJO: Esta gráfica no fue incluida en el texto publicado
 for (i in seq_along(candidatos_td)) {
   bd_td %>% 
     unnest_tokens(word, dialogo) %>% 
@@ -278,6 +280,7 @@ for (i in seq_along(candidatos_td)) {
 
 
 # Top-10 palabras con mayor tf-idf por candidato ----
+# OJO: Esta gráfica no fue incluida en el texto publicado
 
 # Desanidar palabras por candidato y contar su frecuencia
 palabras_candidatos_td <- bd_td %>% 
@@ -382,6 +385,7 @@ bd_td %>%
 
 
 ## Análisis y gráfica de bigramas ----
+# OJO: Esta gráfica no fue incluida en el texto publicado
 bd_td_bigrams <- bd_td %>%
   filter(rol == "Candidato") %>% 
   unnest_tokens(bigram, dialogo, token = "ngrams", n = 2) %>% 
@@ -399,7 +403,7 @@ bd_td_bigrams %>%
   print(n = 50)
 
 
-# Una gráfica para todos los candidatos_td
+# Una gráfica para todos los candidatos
 bd_td_bigrams %>% 
   group_by() %>% 
   filter(ranking < 11) %>% 
@@ -429,6 +433,8 @@ ggsave(filename = "bigrama_por_candidato_faceta.jpg", path = "03_graficas/palabr
 
 
 # Una gráfica por candidato
+# OJO: Esta gráfica no fue incluida en el texto publicado
+
 for (i in seq_along(candidatos_td)) {
   bd_td_bigrams %>% 
     filter(ranking < 11, 
@@ -476,6 +482,7 @@ bd_td_menciones <- bd_td %>%
 
 
 # Gráficas de barras de menciones ----
+# OJO: Esta gráfica no fue incluida en el texto publicado
 bd_td_menciones %>% 
   select(nombre, nombre_corto, menciones_amlo, menciones_anaya, menciones_meade, menciones_bronco, menciones_total) %>% 
   group_by(nombre, nombre_corto) %>% 
