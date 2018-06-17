@@ -1,0 +1,55 @@
+from,to,weight,nombre_corto,cand_mencionado,nom_etiqueta.x,menciones_tot,nom_etiqueta.y
+1,1,2,AMLO,AMLO,"AMLO
+(69)",69,"AMLO
+(69)"
+3,1,17,El Bronco,AMLO,"El Bronco
+(4)",69,"AMLO
+(69)"
+4,1,21,Meade,AMLO,"Meade
+(17)",69,"AMLO
+(69)"
+5,1,8,Zavala,AMLO,"Zavala
+(9)",69,"AMLO
+(69)"
+2,1,21,Anaya,AMLO,"Anaya
+(21)",69,"AMLO
+(69)"
+1,2,1,AMLO,Anaya,"AMLO
+(69)",21,"Anaya
+(21)"
+3,2,10,El Bronco,Anaya,"El Bronco
+(4)",21,"Anaya
+(21)"
+4,2,3,Meade,Anaya,"Meade
+(17)",21,"Anaya
+(21)"
+5,2,7,Zavala,Anaya,"Zavala
+(9)",21,"Anaya
+(21)"
+1,4,2,AMLO,Meade,"AMLO
+(69)",17,"Meade
+(17)"
+3,4,9,El Bronco,Meade,"El Bronco
+(4)",17,"Meade
+(17)"
+4,4,2,Meade,Meade,"Meade
+(17)",17,"Meade
+(17)"
+5,4,2,Zavala,Meade,"Zavala
+(9)",17,"Meade
+(17)"
+2,4,2,Anaya,Meade,"Anaya
+(21)",17,"Meade
+(17)"
+3,5,9,El Bronco,Zavala,"El Bronco
+(4)",9,"Zavala
+(9)"
+4,3,2,Meade,El Bronco,"Meade
+(17)",4,"El Bronco
+(4)"
+5,3,1,Zavala,El Bronco,"Zavala
+(9)",4,"El Bronco
+(4)"
+2,3,1,Anaya,El Bronco,"Anaya
+(21)",4,"El Bronco
+(4)"
