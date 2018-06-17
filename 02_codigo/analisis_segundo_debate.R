@@ -455,3 +455,16 @@ for (i in seq_along(candidatos_sd)) {
   ggsave(filename = paste("top_10_pares_palabras_mas_pronunciadas", candidatos_sd[i],".jpg", sep = " "), path = "03_graficas/palabras/segundo/top_10_pares", width = 15, height = 12, dpi = 100)
 }
 
+# Análisis de trigrams ----
+bd_sd %>%
+  filter(rol == "Candidato") %>% 
+  unnest_tokens(trigram, dialogo, token = "ngrams", n = 3) %>% 
+  separate(trigram, c("palabra_1", "palabra_2", "palabra_3"), sep = " ", remove = FALSE) %>%
+  
+  filter(!palabra_1 %in% custom_stop_words$word) %>%
+  filter(!palabra_2 %in% custom_stop_words$word) %>% 
+  filter(!palabra_3 %in% custom_stop_words$word) %>%
+  count(nombre, trigram, palabra_1, palabra_2, palabra_3, sort = TRUE) %>% 
+  filter(n >= 2) %>% 
+  print(n = 150)
+
