@@ -381,3 +381,72 @@ bd_td %>%
 
 
 
+## Análisis y gráfica de bigramas ----
+bd_td_bigrams <- bd_td %>%
+  filter(rol == "Candidato") %>% 
+  unnest_tokens(bigram, dialogo, token = "ngrams", n = 2) %>% 
+  separate(bigram, c("palabra_1", "palabra_2"), sep = " ", remove = F) %>% 
+  filter(!palabra_1 %in% custom_stop_words$word) %>%
+  filter(!palabra_2 %in% custom_stop_words$word) %>% 
+  count(nombre, bigram, palabra_1, palabra_2, sort = TRUE) %>% 
+  group_by(nombre) %>% 
+  mutate(ranking = rank(-n, ties.method = "first")) %>% 
+  ungroup
+
+bd_td_bigrams %>% 
+  filter(palabra_1 == "andrés" | palabra_1 == "lópez") %>% 
+  arrange(bigram) %>% 
+  print(n = 50)
+
+
+# Una gráfica para todos los candidatos_td
+bd_td_bigrams %>% 
+  group_by() %>% 
+  filter(ranking < 11) %>% 
+  ungroup() %>% 
+  mutate(nombre = fct_relevel(nombre, "RICARDO ANAYA", "JOSÉ ANTONIO MEADE", "ANDRÉS MANUEL LÓPEZ OBRADOR", "JAIME RODRÍGUEZ CALDERÓN")) %>% 
+  ggplot(aes(reorder(bigram, n), n, fill = nombre)) +
+  geom_col() +
+  geom_text(aes(label = n), hjust = 1.5, col ="white", fontface = "bold") +
+  scale_fill_manual(values = c("steelblue", "#f14b4b", "#a62a2a",  "#00cdcd", "grey50")) + 
+  scale_y_continuous(limits = c(0, 18.5), breaks = seq(0, 18, 2)) +
+  labs(title = "LOS 10 PARES DE PALABRAS MÁS FRECUENTES DE CADA CANDIDATO\nEN EL TERCER DEBATE PRESIDENCIAL",
+       x = NULL, 
+       y = NULL, 
+       caption= "\nSebastián Garrido / @segasi / Juan Ricardo Pérez / @juanrpereze / oraculus.mx") +
+  facet_wrap(~ nombre, ncol = 2, scales = "free") +
+  coord_flip() +
+  tema +
+  theme(plot.title = element_text(size = 28),
+        plot.caption = element_text(size = 24), 
+        panel.grid.major.y = element_blank(),
+        panel.spacing = unit(2, "lines"), 
+        strip.text = element_text(size = 17, face = "bold", color = "white"),
+        strip.background =element_rect(fill = "#66666680", color = "#66666600"),
+        legend.position = "none")
+
+ggsave(filename = "bigrama_por_candidato_faceta.jpg", path = "03_graficas/palabras/tercero/top_10_pares/", width = 15, height = 11, dpi = 100)
+
+
+# Una gráfica por candidato
+for (i in seq_along(candidatos_td)) {
+  bd_td_bigrams %>% 
+    filter(ranking < 11, 
+           nombre == candidatos_td[i]) %>% 
+    mutate(bigram = factor(bigram, levels = rev(unique(bigram)))) %>% 
+    arrange(nombre, ranking) %>% 
+    ggplot(aes(bigram, n)) +
+    geom_col(fill = "steelblue") +
+    scale_y_continuous(breaks = seq(0, 18, 2), limits = c(0, 19), expand = c(0, 0)) +
+    labs(title = paste("LOS 10 PARES DE PALABRAS MÁS FRECUENTES EN LAS INTERVENCIONES DE\n", candidatos_td[i], sep = " "),
+         x = NULL, 
+         y = "Frecuencia") +
+    coord_flip() +
+    tema +
+    theme(panel.grid.major.y = element_blank(),
+          strip.text = element_text(size = 14, face = "bold", color = "white"),
+          strip.background =element_rect(fill = "#66666680", color = "#66666600"))
+  
+  ggsave(filename = paste("top_10_pares_palabras_mas_pronunciadas", candidatos_td[i],".jpg", sep = " "), path = "03_graficas/palabras/tercero/top_10_pares", width = 15, height = 12, dpi = 100)
+}
+
