@@ -373,3 +373,58 @@ ggsave(filename = "palabras_totales_por_moderadores_por_debate.jpg", path = "03_
 
 
 
+### Porcenatje de palabras mencionadas por candidatos y moderadores en cada debate ----
+
+# Cálculo
+bd %>% 
+  filter(!rol %in% c("Voz en Off", "Público")) %>% # Eliminar diálogos de la Voz en Off y de las preguntas del público
+  unnest_tokens(word, dialogo) %>%  # Desanidar la palabras dentro de cada diálogo
+  count(num_debate, rol, word, sort = TRUE) %>%  # Contar la frecuencia de cada palabra en cada debate para cada rol: Candidato o Moderador
+  group_by(num_debate, rol) %>% # Agrupar por número de debate y rol
+  summarise(palabras = sum(n)) %>% # Calcular el número total de palabras dichas por todos los candidatos y todos los moderadores en cada debate
+  mutate(palabras_tot = sum(palabras), # Calcular la suma total de palabras dichas por candidatos y moderadores en cada debate
+         palabras_por = round((palabras/palabras_tot)*100, 1)) %>% # Calcular los porcentajes
+  ungroup()
+
+
+# Gráfica
+bd %>% 
+  filter(!rol %in% c("Voz en Off", "Público")) %>% # Eliminar diálogos de la Voz en Off y de las preguntas del público
+  unnest_tokens(word, dialogo) %>%  # Desanidar la palabras dentro de cada diálogo
+  count(num_debate, rol, word, sort = TRUE) %>%  # Contar la frecuencia de cada palabra en cada debate para cada rol: Candidato o Moderador
+  group_by(num_debate, rol) %>% # Agrupar por número de debate y rol
+  summarise(palabras = sum(n)) %>% # Calcular el número total de palabras dichas por todos los candidatos y todos los moderadores en cada debate
+  mutate(palabras_tot = sum(palabras), # Calcular la suma total de palabras dichas por candidatos y moderadores en cada debate
+         palabras_por = round((palabras/palabras_tot)*100, 1)) %>% # Calcular los porcentajes
+  ungroup() %>% 
+  mutate(debate_etiqueta = case_when(num_debate == 1 ~ "Primer debate",
+                                     num_debate == 2 ~ "Segundo debate",
+                                     num_debate == 3 ~ "Tercer debate"),
+         por_etiqueta_candidatos = ifelse(rol == "Candidato", paste(palabras_por, "%", sep = ""), NA),
+         por_etiqueta_moderadores = ifelse(rol == "Moderador", paste(palabras_por, "%", sep = ""), NA),
+         rol = case_when(rol == "Candidato" ~ "Candidatos",
+                         rol == "Moderador" ~ "Moderadores")) %>% 
+  ggplot(aes(debate_etiqueta, palabras_por, fill = rol)) +
+  geom_col() +
+  geom_text(aes(x = debate_etiqueta, y = 80, label = por_etiqueta_candidatos), col = "white", size = 8, fontface = "bold") +
+  geom_text(aes(x = debate_etiqueta, y = 15, label = por_etiqueta_moderadores), col = "white", size = 8, fontface = "bold") +
+  scale_fill_manual(values = c("grey30", "grey60")) +
+  labs(title = "PORCENTAJE DE PALABRAS PRONUNCIADAS POR CANDIDATOS Y MODERADORES\nEN CADA DEBATE",
+       subtitle = "Los porcentajes fueron calculados únicamente considerando las palabras dichas por candidatos y moderadores", 
+       x = "",
+       y = NULL,
+       caption= "\nSebastián Garrido / @segasi / Juan Ricardo Pérez / @juanrpereze / oraculus.mx",
+       fill = "") +
+  tema +
+  theme(plot.title = element_text(size = 28),
+        plot.subtitle = element_text(size = 20),
+        plot.caption = element_text(size = 18),
+        panel.grid = element_blank(), 
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 22),
+        legend.position = c(0.85, -0.12),
+        legend.direction = "horizontal",
+        legend.text = element_text(size = 18))
+
+ggsave(filename = "por_palabras_de_candidatos_y_moderadores_por_debate.jpg", path = "03_graficas/comparacion/", width = 15, height = 10, dpi = 100)
+
