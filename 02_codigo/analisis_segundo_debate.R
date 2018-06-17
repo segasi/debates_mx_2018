@@ -225,3 +225,32 @@ custom_stop_words %>% arrange(word) %>%  print(n = nrow(.))
 
 
 
+# Top-10 palabras pronunciadas por cada candidato, facet ----
+lista_candidatos_sd_sd <- bd_sd %>% filter(rol == "Candidato") %>% distinct(nombre)
+candidatos_sd <- lista_candidatos_sd_sd$nombre
+
+
+bd_sd %>% 
+  filter(rol == "Candidato") %>% 
+  unnest_tokens(word, dialogo) %>% 
+  anti_join(custom_stop_words) %>% # Remover stopwords
+  group_by(nombre) %>% 
+  count(word, sort = TRUE, 
+        rol = last(rol)) %>%   
+  mutate(ranking = rank(-n, ties.method = "first")) %>% 
+  ungroup() %>% 
+  filter(ranking < 10) %>% 
+  arrange(nombre, ranking) %>% 
+  # print(n = 200)
+  ggplot(aes(fct_reorder(word, ranking), n, fill = nombre)) +
+  geom_col() +
+  scale_y_continuous(breaks = seq(0, 30, 5), limits = c(0, 32), expand = c(0, 0)) +
+  scale_fill_manual(values = c("steelblue", "#f14b4b", "#a62a2a",  "#00cdcd", "grey50")) +
+  labs(title = paste("LAS 10 PALABRAS MÁS PRONUNCIADAS POR", candidatos_sd[i], sep = " "),
+       x = "",
+       y = "\nFrecuencia") +
+  coord_flip() +
+  facet_wrap(~ nombre, ncol = 2, scales = "free") +
+  tema +
+  theme(panel.grid.major.y = element_blank())
+
