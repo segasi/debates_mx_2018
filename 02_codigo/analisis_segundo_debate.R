@@ -25,7 +25,7 @@ tema <-  theme_minimal() +
 
 
 ### Cargar texto del segundo debate ----
-segundo_debate <- "http://segasi.com.mx/clases/cide/vis_man/datos/segundo_debate_completo_bis.docx" %>%
+segundo_debate <- "http://segasi.com.mx/clases/cide/vis_man/datos/segundo_debate_completo.docx" %>%
   download() %>%
   read_docx(remove.empty = TRUE, trim = TRUE)
 
@@ -101,7 +101,7 @@ bd_sd <- bd_sd %>%
 
 
 ### Eliminar algunos términos que incluyeron los capturistas pero que no son palabras mencionadas por los candidatos o moderadores ----
-bd_pd <- bd_pd %>% 
+bd_sd <- bd_sd %>% 
   mutate(dialogo = str_replace(dialogo, "\\(INAUDIBLE\\)", ""),
          dialogo = str_replace(dialogo, "\\(Inaudible\\)", ""),
          dialogo = str_replace(dialogo, "\\(PANELISTAS\\)", ""),
