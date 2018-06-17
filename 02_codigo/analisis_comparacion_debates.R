@@ -292,3 +292,29 @@ bd <- rbind(bd, bd_td)
 
 ### Guardar la base de datos de los tres debates como archivo .csv ----
 write_csv(bd, path = "04_datos_output/bd_tres_debates.csv")
+
+### Tokenizar palabras ----
+palabras_por_actor <- bd %>% 
+  group_by(num_debate) %>% 
+  unnest_tokens(word, dialogo) %>%   
+  count(nombre, nombre_corto, word, sort = TRUE) %>%
+  ungroup() 
+
+### Contar número de palabras por actor y debate ----
+palabras_tot_por_actor <- palabras_por_actor %>% 
+  group_by(nombre, nombre_corto, num_debate) %>%
+  summarize(total = sum(n)) %>% 
+  ungroup() %>% 
+  mutate(pal_por_min = ifelse(num_debate == 1, total/16, total/20.5))
+
+
+palabras_tot_por_actor %>% 
+  filter(!is.na(nombre_corto)) %>% 
+  mutate(nombre_corto = fct_rev(fct_relevel(nombre_corto, "Anaya", "Meade", "López Obrador", "Zavala", "El Bronco"))) %>% 
+  ggplot(aes(total, nombre_corto)) +
+  geom_point(size = 3) +
+  geom_text_repel(aes(label = paste("Debate ", num_debate, " | Palabras:", total, sep = " "))) +
+  labs(y = "") +
+  tema
+
+
