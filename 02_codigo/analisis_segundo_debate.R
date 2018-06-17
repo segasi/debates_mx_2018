@@ -118,3 +118,27 @@ write_csv(bd_sd, path = "04_datos_output/bd_segundo_debate.csv")
 bd_sd <- bd_sd %>% 
   mutate(num_debate = 2)
 
+
+### Análisis usando tidytext ----
+
+# Contar palabras totales por candidato
+bd_sd %>% 
+  filter(rol == "Candidato") %>% 
+  unnest_tokens(word, dialogo) %>%   
+  count(nombre, word, sort = TRUE) %>%
+  ungroup() %>% 
+  group_by(nombre) %>%
+  summarize(total = sum(n)) %>% 
+  ungroup() 
+
+
+# Contar palabras totales por moderador
+bd_sd %>% 
+  filter(rol == "Moderador") %>% 
+  unnest_tokens(word, dialogo) %>%   
+  count(nombre, word, sort = TRUE) %>%
+  ungroup() %>% 
+  group_by(nombre) %>%
+  summarize(total = sum(n)) %>% 
+  ungroup()  
+
