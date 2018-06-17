@@ -318,3 +318,30 @@ palabras_tot_por_actor %>%
   tema
 
 
+### Gráfica de barras paralelas de palabras por candidato por debate ----
+
+palabras_tot_por_actor %>% 
+  filter(!nombre %in% c("ASISTENTE", "AZUCENA URESTI", "DENISE MAERKER", "LEÓN KRAUZE", "SERGIO SARMIENTO", "VOZ EN OFF", "YURIRIA SIERRA", "GABRIELA WARKENTIN", "CARLOS PUIG", "LEONARDO CURZIO")) %>% 
+  mutate(nombre_corto = (fct_relevel(nombre_corto, "Anaya", "Meade", "López Obrador", "Zavala", "El Bronco"))) %>% 
+  ggplot(aes(nombre_corto, total, fill = factor(num_debate))) +
+  geom_bar(position = "dodge", stat='identity') +
+  geom_text(aes(label = comma(total)), position=position_dodge(width = 0.9), vjust = 1.55, size = 6, color = "white", fontface = "bold") +
+  scale_y_continuous(expand = c(0, 0)) +
+  scale_fill_manual(values = c("grey80", "grey50", "grey20"), labels = c("Primero", "Segundo", "Tercero")) +
+  labs(title = "NÚMERO TOTAL DE PALABRAS PRONUNCIADAS POR CADA CANDIDATO PRESIDENCIAL\nEN LOS TRES DEBATES",
+       x = NULL,
+       y = NULL,
+       caption= "\nSebastián Garrido / @segasi / Juan Ricardo Pérez / @juanrpereze / oraculus.mx",
+       fill = NULL) +
+  tema +
+  theme(panel.grid.major.x = element_blank(),
+        legend.position = c(0.8, 1),
+        legend.direction = "horizontal",
+        legend.text = element_text(size = 18),
+        axis.text.x = element_text(size = 20),
+        axis.line.y = element_blank(),
+        axis.text.y = element_blank())
+
+ggsave(filename = "palabras_totales_por_candidato_por_debate.jpg", path = "03_graficas/comparacion/", width = 15, height = 10, dpi = 100)
+
+
