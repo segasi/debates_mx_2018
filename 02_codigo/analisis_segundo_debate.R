@@ -458,7 +458,7 @@ for (i in seq_along(candidatos_sd)) {
   ggsave(filename = paste("top_10_pares_palabras_mas_pronunciadas", candidatos_sd[i],".jpg", sep = " "), path = "03_graficas/palabras/segundo/top_10_pares", width = 15, height = 12, dpi = 100)
 }
 
-# Análisis de trigrams ----
+# Análisis de trigramas ----
 bd_sd %>%
   filter(rol == "Candidato") %>% 
   unnest_tokens(trigram, dialogo, token = "ngrams", n = 3) %>% 
