@@ -286,3 +286,7 @@ bd_td <- bd_td %>%
 
 
 
+### Unir base de datos de debates ----
+bd <- rbind(bd_pd, bd_sd)
+bd <- rbind(bd, bd_td)
+
