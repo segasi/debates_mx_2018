@@ -389,7 +389,7 @@ bd_sd %>%
 
 
 
-# Análisis y gráficas de bigrams ----
+# Análisis y gráficas de bigramas ----
 bd_sd_bigrams <- bd_sd %>%
   filter(rol == "Candidato") %>% 
   unnest_tokens(bigram, dialogo, token = "ngrams", n = 2) %>% 
