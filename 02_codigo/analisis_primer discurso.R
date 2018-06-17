@@ -178,6 +178,7 @@ lista_candidatos <- bd_pd %>% filter(rol == "Candidato") %>% distinct(nombre)
 candidatos <- lista_candidatos$nombre
 
 # Generar una gráfica por candidato
+# OJO: Estas gráficas no fue incluida en el texto publicado
 for (i in seq_along(candidatos)) {
   bd_pd %>% 
     unnest_tokens(word, dialogo) %>% 

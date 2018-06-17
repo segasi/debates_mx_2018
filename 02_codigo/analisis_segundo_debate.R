@@ -226,6 +226,8 @@ custom_stop_words %>% arrange(word) %>%  print(n = nrow(.))
 
 
 # Top-10 palabras pronunciadas por cada candidato, facet ----
+# OJO: Esta gráfica no fue incluida en el texto publicado
+
 lista_candidatos_sd_sd <- bd_sd %>% filter(rol == "Candidato") %>% distinct(nombre)
 candidatos_sd <- lista_candidatos_sd_sd$nombre
 
@@ -255,7 +257,7 @@ bd_sd %>%
   theme(panel.grid.major.y = element_blank())
 
 # Top-10 palabras pronunciadas por cada candidato ----
-
+# OJO: Estas gráficas no fue incluida en el texto publicado
 for (i in seq_along(candidatos_sd)) {
   bd_sd %>% 
     unnest_tokens(word, dialogo) %>% 
@@ -278,11 +280,12 @@ for (i in seq_along(candidatos_sd)) {
     tema +
     theme(panel.grid.major.y = element_blank())
   
-  ggsave(filename = paste("10_palabras_mas_pronunciadas", candidatos_sd[i],".jpg", sep = " "), path = "03_graficas/palabras/segundo/top_10/", width = 15, height = 12, dpi = 100)
+  ggsave(filename = paste("10_palabras_mas_pronunciadas", candidatos_sd[i],".jpg", sep = "_"), path = "03_graficas/palabras/segundo/top_10/", width = 15, height = 12, dpi = 100)
 }
 
 
 # Top-10 palabras con mayor tf-idf por candidato ----
+# OJO: Esta gráfica no fue incluida en el texto publicado
 
 # Desanidar palabras por candidato y contar su frecuencia
 palabras_candidatos_sd <- bd_sd %>% 
