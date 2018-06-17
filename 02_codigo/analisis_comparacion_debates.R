@@ -103,7 +103,7 @@ bd_pd <- bd_pd %>%
 
 ### SEGUNDO DEBATE ----
 ## Cargar texto ----
-segundo_debate <- "http://segasi.com.mx/clases/cide/vis_man/datos/segundo_debate_completo_bis.docx" %>%
+segundo_debate <- "http://segasi.com.mx/clases/cide/vis_man/datos/segundo_debate_completo.docx" %>%
   download() %>%
   read_docx(remove.empty = TRUE, trim = TRUE)
 
