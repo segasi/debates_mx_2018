@@ -480,3 +480,36 @@ bd_sd_menciones <- bd_sd %>%
   ungroup() 
 
 
+# Gráficas de barras de menciones----
+bd_sd_menciones %>% 
+  select(nombre, nombre_corto, menciones_amlo, menciones_anaya, menciones_meade, menciones_bronco, menciones_total) %>% 
+  group_by(nombre, nombre_corto) %>% 
+  summarise_all(funs(tot = sum)) %>% 
+  ungroup() %>% 
+  gather(key = "cand_mencionado",
+         value = "num",
+         -nombre, -nombre_corto) %>%  
+  mutate(cand_mencionado = case_when(cand_mencionado == "menciones_amlo_tot" ~ "Veces que AMLO fue mencionado por",
+                                     cand_mencionado == "menciones_anaya_tot" ~ "Veces que Anaya fue mencionado por",
+                                     cand_mencionado == "menciones_bronco_tot" ~ "Veces que El Bronco fue mencionado por",
+                                     cand_mencionado == "menciones_meade_tot" ~ "Veces que Meade fue mencionado por",
+                                     cand_mencionado == "menciones_zavala_tot" ~ "Veces que Zavala fue mencionada por")) %>% 
+  filter(!is.na(cand_mencionado)) %>% 
+  ggplot(aes(nombre_corto, num)) +
+  geom_col(fill = "steelblue") +
+  # geom_text(aes(label = num), hjust = -1) +
+  coord_flip() +
+  facet_wrap(~ cand_mencionado) +
+  labs(title = "NÚMERO DE VECES QUE _____ MENCIONÓ A _____ EN EL SEGUNDO DEBATE",
+       x = "",
+       y = "\nNúmero de menciones",
+       caption = "Sebastián Garrido / @segasi / Juan Ricardo Pérez / @juanrpereze / oraculus.mx") +
+  tema +
+  theme(panel.grid.major.y = element_blank(),
+        plot.title = element_text(size = 26),
+        axis.title.x = element_text(hjust = 0),
+        strip.text = element_text(size = 16, face = "bold", color = "white"),
+        strip.background =element_rect(fill = "#66666680", color = "#66666600"))
+
+ggsave(filename = "num_menciones_candidatos_sd.jpg", path = "03_graficas/menciones/segundo/", width = 15, height = 10, dpi = 100)  
+
