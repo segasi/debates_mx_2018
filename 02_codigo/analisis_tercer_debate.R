@@ -277,3 +277,107 @@ for (i in seq_along(candidatos_td)) {
 }
 
 
+# Top-10 palabras con mayor tf-idf por candidato ----
+
+# Desanidar palabras por candidato y contar su frecuencia
+palabras_candidatos_td <- bd_td %>% 
+  filter(rol == "Candidato") %>% 
+  unnest_tokens(word, dialogo) %>% 
+  count(nombre, word, sort = TRUE) %>%
+  ungroup()
+
+
+# Contar palabras totales de cada candidato
+palabras_totales <- palabras_candidatos_td %>% 
+  group_by(nombre) %>%
+  summarize(total = sum(n)) %>% 
+  ungroup()
+
+
+# Unir datos de frecuencia de palabras por candidato con la cifra total de palabras que cada uno mencionó
+palabras_candidatos_td <- left_join(palabras_candidatos_td, palabras_totales)
+
+# Calcular el tf-idf
+palabras_candidatos_td <- palabras_candidatos_td %>%
+  bind_tf_idf(word, nombre, n) 
+
+
+# Graficar el resultado
+palabras_candidatos_td %>%
+  arrange(desc(tf_idf)) %>%
+  mutate(word = factor(word, levels = rev(unique(word)))) %>% 
+  arrange(nombre, -tf_idf) %>% 
+  group_by(nombre) %>% 
+  mutate(ranking = rank(-tf_idf, ties.method = "first")) %>% 
+  ungroup %>% 
+  filter(ranking < 11) %>% 
+  mutate(nombre = fct_relevel(nombre, "RICARDO ANAYA", "JOSÉ ANTONIO MEADE", "ANDRÉS MANUEL LÓPEZ OBRADOR", "JAIME RODRÍGUEZ CALDERÓN")) %>% 
+  ggplot(aes(word, tf_idf, fill = nombre)) +
+  geom_col() +
+  scale_fill_manual(values = c("steelblue", "#f14b4b", "#a62a2a",  "#00cdcd", "grey50")) + 
+  labs(title = "LAS 10 PALABRAS MÁS DISTINTIVAS DE CADA CANDIDATO (Tf-idf) EN EL\nSEGUNDO DEBATE PRESIDENCIAL",
+       x = NULL, 
+       y = NULL, 
+       caption= "\nSebastián Garrido / @segasi / Juan Ricardo Pérez / @juanrpereze / oraculus.mx") +
+  facet_wrap(~ nombre, ncol = 2, scales = "free") +
+  coord_flip() +
+  tema +
+  theme(plot.title = element_text(size = 28),
+        plot.caption = element_text(size = 24), 
+        panel.grid.major.y = element_blank(),
+        panel.spacing = unit(2, "lines"), 
+        strip.text = element_text(size = 17, face = "bold", color = "white"),
+        strip.background =element_rect(fill = "#66666680", color = "#66666600"),
+        legend.position = "none")
+
+ggsave(filename = "tf_idf_por_candidato.jpg", path = "03_graficas/palabras/tercero/tf_idf/", width = 15, height = 12, dpi = 100)
+
+# Análisis Anaya
+palabras_candidatos_td %>%
+  arrange(desc(tf_idf)) %>%
+  mutate(word = factor(word, levels = rev(unique(word)))) %>% 
+  arrange(nombre, -tf_idf) %>% 
+  group_by(nombre) %>% 
+  mutate(ranking = rank(-tf_idf, ties.method = "first")) %>% 
+  ungroup %>% 
+  filter(ranking < 11) %>% 
+  filter(nombre == "RICARDO ANAYA")
+
+bd_td %>% 
+  filter(nombre == "RICARDO ANAYA", 
+         str_detect(dialogo, "página"))
+
+
+# Análisis Meade
+palabras_candidatos_td %>%
+  arrange(desc(tf_idf)) %>%
+  mutate(word = factor(word, levels = rev(unique(word)))) %>% 
+  arrange(nombre, -tf_idf) %>% 
+  group_by(nombre) %>% 
+  mutate(ranking = rank(-tf_idf, ties.method = "first")) %>% 
+  ungroup %>% 
+  filter(ranking < 11) %>% 
+  filter(nombre == "JOSÉ ANTONIO MEADE")
+
+bd_td %>% 
+  filter(nombre == "JOSÉ ANTONIO MEADE", 
+         str_detect(dialogo, "implica"))
+
+
+# Análisis AMLO
+palabras_candidatos_td %>%
+  arrange(desc(tf_idf)) %>%
+  mutate(word = factor(word, levels = rev(unique(word)))) %>% 
+  arrange(nombre, -tf_idf) %>% 
+  group_by(nombre) %>% 
+  mutate(ranking = rank(-tf_idf, ties.method = "first")) %>% 
+  ungroup %>% 
+  filter(ranking < 11) %>% 
+  filter(nombre == "ANDRÉS MANUEL LÓPEZ OBRADOR")
+
+bd_td %>% 
+  filter(nombre == "ANDRÉS MANUEL LÓPEZ OBRADOR", 
+         str_detect(dialogo, "implica"))
+
+
+
