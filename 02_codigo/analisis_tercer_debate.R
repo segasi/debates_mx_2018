@@ -114,3 +114,8 @@ bd_td %>%
   write_csv(path = "04_datos_output/bd_tercer_debate.csv")
 
 
+### Generar variable que indique a qué debate corresponde el texto ----
+bd_td <- bd_td %>% 
+  mutate(num_debate = 3)
+
+
