@@ -6,12 +6,12 @@ En los tres casos, la transcripción del debate fue llevada a cabo por [Eficienc
 
 El proyecto incluye cuatro folders: 
 
-- En la carpeta **01_datos** encontrarás las transcripciones en Word de cada uno de los debates. Sin embargo, para procesar estos archivos en el código los descargamos de Internet.
+- En el folder **01_datos** encontrarás las transcripciones en Word de cada uno de los debates. Sin embargo, para procesar estos archivos en el código los descargamos de Internet.
 
-- En la carpeta **02_codigo** encontrarás el código del análisis de cada uno de los debates, así como un cuarto script en el que comparamos los datos de los tres.
+- En el folder **02_codigo** encontrarás el código del análisis de cada uno de los debates, así como un cuarto script en el que comparamos los datos de los tres.
 
-- En la carpeta **03_graficas** encontrarás las gráficas generadas para analizar cada debate y la comparación de los tres. En esta carpeta hay más gráficas de las que publicamos. 
+- En el folder **03_graficas** encontrarás las gráficas generadas para analizar cada debate y la comparación de los tres. En esta carpeta hay más gráficas de las que publicamos. 
 
-- En la carpeta **04_datos_output** encontrarás tres archivos en formato .csv con la base de datos de los diálogos de cada debate por separado, así como un archivo que incluye todos los diálogos de los tres debates. Además encontrarñas las bases de datos de enlaces y nodos utilizadas para construir el diagrama de red de menciones de cada debate.
+- En el folder **04_datos_output** encontrarás tres archivos en formato .csv con la base de datos de los diálogos de cada debate por separado, así como un archivo que incluye todos los diálogos de los tres debates. Además encontrarñas las bases de datos de enlaces y nodos utilizadas para construir el diagrama de red de menciones de cada debate.
 
 
