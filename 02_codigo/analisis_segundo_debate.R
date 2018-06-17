@@ -23,3 +23,9 @@ tema <-  theme_minimal() +
         axis.title = element_text(size = 18, hjust = 1, face = "bold", margin = margin(0,0,0,0), family="Didact Gothic Regular"),
         axis.text = element_text(size = 16, face = "bold", family="Didact Gothic Regular"))
 
+
+### Cargar texto del segundo debate ----
+segundo_debate <- "http://segasi.com.mx/clases/cide/vis_man/datos/segundo_debate_completo_bis.docx" %>%
+  download() %>%
+  read_docx(remove.empty = TRUE, trim = TRUE)
+
