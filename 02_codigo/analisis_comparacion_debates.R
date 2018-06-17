@@ -290,3 +290,5 @@ bd_td <- bd_td %>%
 bd <- rbind(bd_pd, bd_sd)
 bd <- rbind(bd, bd_td)
 
+### Guardar la base de datos de los tres debates como archivo .csv ----
+write_csv(bd, path = "04_datos_output/bd_tres_debates.csv")
