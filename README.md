@@ -19,5 +19,5 @@ El proyecto incluye cuatro folders:
 Desde nuestra perspectiva, la diferencia más significativa radica en que en el análisis del segundo debate dijimos que Yuriria Sierra había mencionado 2,606 palabras y León Krauze 2,340. Sin embargo, las cifras correctas son 2,514 y 2,601, respectivamente. Esto implica, primero, que Krauze dijo más palabras que Sierra, y, segundo, que ambos moderadores mencionaron más palabras que López Obrador.
 
 <p align="center">
-  <img width="460" height="300" src="http://segasi.com.mx/clases/cide/vis_man/datos/tenor.gif">
+  <img src="http://segasi.com.mx/clases/cide/vis_man/datos/tenor.gif">
 </p>
