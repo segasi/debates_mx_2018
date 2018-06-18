@@ -24,7 +24,7 @@ Por ejemplo, al revisar la transciripción del tercer debate nos dimos cuenta qu
 
 Desde nuestra perspectiva, la diferencia más significativa entre lo que publicamos originalmente y los resultados que se obtienen con estos scripts radica en que en el análisis del segundo debate dijimos que Yuriria Sierra había mencionado **2,606** palabras y León Krauze **2,340**. Sin embargo, las cifras correctas son **2,514** y **2,601**, respectivamente. Esto implica, primero, que Krauze dijo más palabras que Sierra, y, segundo, que ambos moderadores mencionaron más palabras que López Obrador.
 
-**Nota**: en los scripts incluimos diversos caracteres especiales (e.g., ó, é). Para que pueda ejecutar correctamente el código, debes asegurarte que RStudio está guardando y leyendo los archivos usando la codificación UTF-8. Para ello, debes ir a **Tools > Global Options > Code > Saving** y elegir UTF-8, como se muestra en la imagen a continuación.
+**Nota**: en los scripts incluimos diversos caracteres especiales (e.g., ó, é). Para que puedas ejecutar correctamente el código, debes asegurarte que RStudio está guardando y leyendo los archivos usando la codificación UTF-8. Para ello, debes ir a **Tools > Global Options > Code > Saving** y elegir UTF-8, como se muestra en la imagen a continuación.
 
 <p align="center">
   <img src="http://segasi.com.mx/clases/cide/vis_man/datos/rstudio_utf8.png">
