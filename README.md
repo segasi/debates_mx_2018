@@ -16,7 +16,7 @@ El proyecto incluye cuatro folders:
 
 - En el folder **03_graficas** encontrarás las gráficas generadas para analizar cada debate y la comparación de los tres. En esta carpeta hay más gráficas de las que publicamos. 
 
-- En el folder **04_datos_output** encontrarás tres archivos en formato .csv con la base de datos de los diálogos de cada debate por separado, así como un archivo que incluye todos los diálogos de los tres debates. Además encontrarñas las bases de datos de enlaces y nodos utilizadas para construir el diagrama de red de menciones de cada debate.
+- En el folder **04_datos_output** encontrarás tres archivos en formato .csv con la base de datos de los diálogos de cada debate por separado, así como un archivo que incluye todos los diálogos de los tres debates. Además encontrarás las bases de datos de enlaces y nodos utilizadas para construir el diagrama de red de menciones de cada debate.
 
 **Aclaración**: algunos de los resultados que se obtienen con estos scripts varían respecto a los resultados que reportamos inicialmente en Nexos y Oraculus. Esto se debe a que cuando preparábamos el tercer análisis, así como este repositorio, nos dimos cuenta de algunos errores menores que corregimos. 
 
