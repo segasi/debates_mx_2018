@@ -4,6 +4,10 @@ En este proyecto de RStudio encontrarás el código que Juan Ricardo Pérez y yo
 
 En los tres casos, la transcripción del debate fue llevada a cabo por [Eficiencia Informativa](https://data4.efinf.com/josso/signon/login.do?josso_back_to=https://data4.efinf.com/reader/josso_security_check).
 
+<p align="center">
+  <img src="http://segasi.com.mx/clases/cide/vis_man/datos/tenor.gif">
+</p>
+
 El proyecto incluye cuatro folders: 
 
 - En el folder **01_datos** encontrarás las transcripciones en Word de cada uno de los debates. Sin embargo, para procesar estos archivos en el código los descargamos de Internet.
@@ -18,6 +22,4 @@ El proyecto incluye cuatro folders:
 
 Desde nuestra perspectiva, la diferencia más significativa radica en que en el análisis del segundo debate dijimos que Yuriria Sierra había mencionado 2,606 palabras y León Krauze 2,340. Sin embargo, las cifras correctas son 2,514 y 2,601, respectivamente. Esto implica, primero, que Krauze dijo más palabras que Sierra, y, segundo, que ambos moderadores mencionaron más palabras que López Obrador.
 
-<p align="center">
-  <img src="http://segasi.com.mx/clases/cide/vis_man/datos/tenor.gif">
-</p>
+
