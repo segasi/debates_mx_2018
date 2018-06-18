@@ -173,13 +173,12 @@ bd_sd <- bd_sd %>%
                                   nombre == "JOSÉ ANTONIO MEADE" ~ "Meade",
                                   nombre == "RICARDO ANAYA" ~ "Anaya")) %>% 
   mutate(dialogo = str_trim(dialogo, "both")) %>% 
-  select(nombre, nombre_corto, rol, dialogo) %>%
-  mutate(rol = ifelse(!is.na(nombre_corto), "Candidato", rol))
+  select(nombre, nombre_corto, rol, dialogo) 
 
 
 
 # Eliminar algunos términos que incluyeron los capturistas pero que no son palabras mencionadas por los candidatos o moderadores ----
-bd_pd <- bd_pd %>% 
+bs_pd <- bd_sd %>% 
   mutate(dialogo = str_replace(dialogo, "\\(INAUDIBLE\\)", ""),
          dialogo = str_replace(dialogo, "\\(Inaudible\\)", ""),
          dialogo = str_replace(dialogo, "\\(PANELISTAS\\)", ""),
