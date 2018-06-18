@@ -1,4 +1,5 @@
 ### Paquetes ----
+# install.packages("pacman") # Necesario solo si no tienes el paquete pacman instalado
 library(pacman)
 p_load(animation, cowplot, extrafont, forcats, gganimate, 
        ggforce, ggmap, ggraph, ggrepel, ggridges, hrbrthemes, 

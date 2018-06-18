@@ -1,4 +1,5 @@
 ### Paquetes ----
+# install.packages("pacman") # Necesario solo si no tienes el paquete pacman instalado
 library(pacman)
 p_load(animation, cowplot, extrafont, forcats, gganimate, 
        ggforce, ggmap, ggraph, ggrepel, ggridges, hrbrthemes, 
@@ -308,18 +309,7 @@ palabras_tot_por_actor <- palabras_por_actor %>%
   mutate(pal_por_min = ifelse(num_debate == 1, total/16, total/20.5))
 
 
-palabras_tot_por_actor %>% 
-  filter(!is.na(nombre_corto)) %>% 
-  mutate(nombre_corto = fct_rev(fct_relevel(nombre_corto, "Anaya", "Meade", "López Obrador", "Zavala", "El Bronco"))) %>% 
-  ggplot(aes(total, nombre_corto)) +
-  geom_point(size = 3) +
-  geom_text_repel(aes(label = paste("Debate ", num_debate, " | Palabras:", total, sep = " "))) +
-  labs(y = "") +
-  tema
-
-
 ### Gráfica de barras paralelas de palabras por candidato por debate ----
-
 palabras_tot_por_actor %>% 
   filter(!nombre %in% c("ASISTENTE", "AZUCENA URESTI", "DENISE MAERKER", "LEÓN KRAUZE", "SERGIO SARMIENTO", "VOZ EN OFF", "YURIRIA SIERRA", "GABRIELA WARKENTIN", "CARLOS PUIG", "LEONARDO CURZIO")) %>% 
   mutate(nombre_corto = (fct_relevel(nombre_corto, "Anaya", "Meade", "López Obrador", "Zavala", "El Bronco"))) %>% 
