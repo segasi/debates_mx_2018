@@ -173,7 +173,8 @@ bd_sd <- bd_sd %>%
                                   nombre == "JOSÉ ANTONIO MEADE" ~ "Meade",
                                   nombre == "RICARDO ANAYA" ~ "Anaya")) %>% 
   mutate(dialogo = str_trim(dialogo, "both")) %>% 
-  select(nombre, nombre_corto, rol, dialogo) 
+  select(nombre, nombre_corto, rol, dialogo) %>%
+  mutate(rol = ifelse(!is.na(nombre_corto), "Candidato", rol))
 
 
 
